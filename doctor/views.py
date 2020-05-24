@@ -4,6 +4,7 @@ from django.contrib import auth
 from patient.models import Patient
 from .models import Doctor, Prescription
 from hms.models import Person
+import datetime
 
 
 def prescription(request):
@@ -19,6 +20,7 @@ def prescription(request):
             person=patient_person), doctor=Doctor.objects.get(person=doctor_person))
         pres.prescription = prescription
         pres.disease = disease
+        pres.date = datetime.datetime.now()
         pres.save()
         return redirect('prescription')
     else:

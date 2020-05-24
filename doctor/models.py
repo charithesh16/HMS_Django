@@ -17,4 +17,4 @@ class Prescription(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     prescription = models.CharField(max_length=200)
     disease = models.CharField(max_length=256)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField()
