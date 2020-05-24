@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %} | User Page {% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">HMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            {% if person.type == 1%}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Invoice & Payments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Medical History</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'prescription' %}">Prescriptions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'profile'%}">Profile</a>
+            </li>
+            {% endif %}
+            <li class="nav-item mr-3">
+                <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><i
+                        class="fas fa-sign-out-alt"></i> Logout</a>
+                <form action="{% url 'logout' %}" method="POST" id="logout">
+                    {% csrf_token %}
+                    <input type="hidden">
+                </form>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login'  %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'Register' %}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prescription</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{%url 'prescription'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="patient">Select Patient</label>
+                        <select class="form-control" id="patient" name="patient">
+                            {%for i in patients%}
+                            <option value="{{i.person}}">{{i.person.user.username}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="disease">Disease</label>
+                        <input type="text" class="form-control" id="disease" name="disease"
+                            placeholder="Enter the disease">
+                    </div>
+                    <div class="form-group">
+                        <label for="pres">Prescription</label>
+                        <input type="text" class="form-control" id="pres" name="prescription"
+                            placeholder="Enter the prescription">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row p-3">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Create prescription
+        </button>
+    </div>
+    {%for i in prescriptions%}
+    <div class="card">
+        <h5 class="card-header">{{ i.date }}</h5>
+        <div class="card-body">
+            <h5 class="card-title">Name : {{i.patient.person.user.username}}</h5>
+            <p class="card-text">
+            <p>Disease : {{i.disease}}</p>
+            <p>Prescription : {{i.prescription}}</p>
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
-
+from patient.models import Patient
 from hms.models import Person
+from datetime import datetime
 
 
 class Doctor(models.Model):
@@ -9,3 +10,11 @@ class Doctor(models.Model):
     gender = models.CharField(max_length=10, default=None)
     age = models.IntegerField(default=None)
     address = models.CharField(max_length=256, default=None)
+
+
+class Prescription(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    prescription = models.CharField(max_length=200)
+    disease = models.CharField(max_length=256)
+    date = models.DateTimeField(auto_now=True)
