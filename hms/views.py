@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Person
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import auth
 from patient.models import Patient
 from doctor.models import Doctor
@@ -49,6 +49,12 @@ def register(request):
                         username=username, password=password, email=email, first_name=first_name, last_name=last_name)
                     person = Person(user=user)
                     person.type = int(personType)
+                    if person.type == 1:
+                        p_group = Group.objects.get(name='Patient')
+                        p_group.user_set.add(user)
+                    else:
+                        d_group = Group.objects.get(name='Doctor')
+                        d_group.user_set.add(user)
                     person.save()
                     # patient = Patient(person=Person(user=user))
                     # patient.save()

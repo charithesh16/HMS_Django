@@ -8,3 +8,6 @@ class Patient(models.Model):
     gender = models.CharField(max_length=10, default=None)
     age = models.IntegerField(default=None)
     address = models.CharField(max_length=256, default=None)
+
+    def __str__(self):
+        return self.person.user.username

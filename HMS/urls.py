@@ -6,4 +6,4 @@ urlpatterns = [
     path('accounts/', include('hms.urls')),
     path('patient/', include('patient.urls')),
     path('doctor/', include('doctor.urls')),
-]
+    path('appointments/', include('appointments.urls')), ]

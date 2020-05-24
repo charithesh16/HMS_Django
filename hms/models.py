@@ -10,4 +10,10 @@ class Person(models.Model):
     def __str__(self):
         return self.user.username
 
-# class Patient(models.Model):
+
+class Receptionist(models.Model):
+    person = models.OneToOneField(Person, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.person.user.username
+

@@ -11,6 +11,9 @@ class Doctor(models.Model):
     age = models.IntegerField(default=None)
     address = models.CharField(max_length=256, default=None)
 
+    def __str__(self):
+        return self.person.user.username
+
 
 class Prescription(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
