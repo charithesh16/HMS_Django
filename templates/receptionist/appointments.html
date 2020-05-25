@@ -20,7 +20,7 @@
             </li>
             {% if person.type == 1%}
             <li class="nav-item">
-                <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
+                <a class="nav-link" href="{% url 'appointment' %}">Appointments</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Invoice & Payments</a>
@@ -29,17 +29,24 @@
                 <a class="nav-link" href="{%url 'profile' %}">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Medical History</a>
+                <a class="nav-link" href="{%url 'history'%}">Medical History</a>
+            </li>
+            {% elif person.type == 0 %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Prescriptions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
             </li>
             {% else %}
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{%url 'prescription' %}">Prescriptions</a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="{%url 'profile'%}">Profile</a>
+                <a class="nav-link" href="{%url 'rpatients'%}">Patients</a>
             </li>
             {% endif %}
             <li class="nav-item mr-3">
@@ -61,20 +68,18 @@
         </ul>
     </div>
 </nav>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Prescription</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Appointment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{%url 'prescription'%}" method="POST">
+                <form action="{%url 'create_appointment' %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="patient">Select Patient</label>
@@ -85,14 +90,27 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="disease">Disease</label>
-                        <input type="text" class="form-control" id="disease" name="disease"
-                            placeholder="Enter the disease">
+                        <label for="doctor">Select Doctor</label>
+                        <select class="form-control" id="doctor" name="doctor">
+                            {%for i in doctors %}
+                            <option value="{{i.person}}">{{i.person.user.username}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="date" name='date' id="date">
+                        <label for="date" class="active">Date</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="time" name='time' min="09:30" max="20:30">
+                        <label for="time" class="active">Time</label>
                     </div>
                     <div class="form-group">
-                        <label for="pres">Prescription</label>
-                        <input type="text" class="form-control" id="pres" name="prescription"
-                            placeholder="Enter the prescription">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -100,29 +118,39 @@
                     </div>
                 </form>
             </div>
-
-
-
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row p-3">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Create prescription
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appointmentModal">
+            Create Appointment
         </button>
     </div>
-    {%for i in prescriptions%}
-    <div class="card">
-        <h5 class="card-header">{{ i.date }}</h5>
-        <div class="card-body">
-            <h5 class="card-title">Name : {{i.patient.person.user.username}}</h5>
-            <p class="card-text">
-            <p>Disease : {{i.disease}}</p>
-            <p>Prescription : {{i.prescription}}</p>
-            </p>
-        </div>
-        {% endfor %}
-    </div>
-    {% endblock %}
+    <table class=" mt-5 table table-striped table-condensed">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Consulted Doctor</th>
+                <th scope="col">Date and Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in appointments %}
+            <tr>
+                <td>{{i.patient}}</td>
+                <td>{{i.doctor}}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.status}}</td>
+                <td><a href="update/{{i.id}}" class="btn btn-primary">Update</a></td>
+                <td><a href="delete/{{i.id}}" class="btn btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

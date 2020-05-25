@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} | User Page {% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="{%url 'update' appointment.id%}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type='hidden' name='id' value='{{appointment.id}}'>
+        </div>
+        <div class="form-group">
+            <select class="form-control" disabled="disabled" id="patient" name="patient">
+                <option value="{{appointment.patient}}">{{appointment.patient}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="doctor">Select Doctor</label>
+            <select class="form-control" id="doctor" name="doctor">
+                {%for i in doctors %}
+                <option value="{{i.person}}">{{i.person.user.username}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-field col s6">
+            <input type="date" name='date' id="date">
+            <label for="date" class="active">Date</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="time" name='time' min="09:30" max="20:30">
+            <label for="time" class="active">Time</label>
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" name="status">
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

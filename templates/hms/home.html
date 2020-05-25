@@ -13,10 +13,10 @@
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href="{%url 'about'%}">About</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Contact Us</a>
+        <a class="nav-link" href="{%url 'contact'%}">Contact Us</a>
       </li>
       {% if person.type == 1%}
       <li class="nav-item">
@@ -42,7 +42,7 @@
         <a class="nav-link" href="{%url 'profile'%}">Profile</a>
       </li>
       {%else%}
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
       </li>
       <li class="nav-item">

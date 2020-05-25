@@ -182,3 +182,15 @@ def update_patient(request, patient_id=None):
         return redirect('rpatients')
     # patients = Rpatient.objects.filter(receptionist=receptionist)
     return render(request, 'receptionist/update_patient.html', {'patients': patient})
+
+
+def contact(request):
+    user = User.objects.get(username=request.user)
+    person = Person.objects.get(user=user)
+    return render(request, 'contact.html', {'person': person})
+
+
+def about(request):
+    user = User.objects.get(username=request.user)
+    person = Person.objects.get(user=user)
+    return render(request, 'about.html', {'person': person})

@@ -28,19 +28,27 @@
             <li class="nav-item">
                 <a class="nav-link" href="{%url 'profile' %}">Profile</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{%url 'history'%}">Medical History</a>
             </li>
-            {% else %}
+            {% elif person.type == 0 %}
             <li class="nav-item">
                 <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{%url 'prescription' %}">Prescriptions</a>
+                <a class="nav-link" href="{%url 'prescription'%}">Prescriptions</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{%url 'profile'%}">Profile</a>
             </li>
+            {%else%}
+            <li class="nav-item ">
+                <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'rpatients'%}">Patients</a>
+            </li>
+
             {% endif %}
             <li class="nav-item mr-3">
                 <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><i
@@ -61,19 +69,8 @@
         </ul>
     </div>
 </nav>
-
-
 <div class="container">
-    {%for i in prescriptions%}
-    <div class="card">
-        <h5 class="card-header">{{ i.date }}</h5>
-        <div class="card-body">
-            <h5 class="card-title">Consulted Doctor : {{i.doctor.person.user.username}}</h5>
-            <p class="card-text">
-            <p>Disease : {{i.disease}}</p>
-            <p>Prescription by doctor : {{i.prescription}}</p>
-            </p>
-        </div>
-        {% endfor %}
-    </div>
-    {% endblock %}
+    <h1>To be Done.</h1>
+</div>
+
+{% endblock %}
