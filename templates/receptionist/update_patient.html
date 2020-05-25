@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %} | User Page {% endblock %}
+
+{% block content %}
+<div class="container">
+    <section id="dashboard" class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h4>
+                                            <i class="fas fa-user"></i> Patient Details</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <form action="{% url 'update_patient' patients.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" name="name" class="form-control"
+                                                    value="{{patients.name}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input type="text" name="phone" class="form-control"
+                                                    value="{{patients.phone}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" name="email" class="form-control"
+                                                    value="{{patients.email}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gender">Gender</label>
+                                                <input type="text" name="gender" class="form-control"
+                                                    value="{{patients.gender}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="age">Age</label>
+                                                <input type="number" name="age" class="form-control"
+                                                    value="{{patients.age}}" required>
+                                            </div>
+                                            <input type="submit" value="Submit" class="btn btn-secondary btn-block">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

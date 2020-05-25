@@ -29,6 +29,6 @@ def prescription(request):
             user=User.objects.get(username=request.user))
         patients = Patient.objects.all()
         prescriptions = Prescription.objects.filter(
-            doctor=Doctor.objects.get(person=person))
+            doctor=Doctor.objects.get(person=person)).order_by('date')
         print(prescriptions)
         return render(request, 'doctor/prescription.html', {'prescriptions': prescriptions, 'patients': patients, 'person': person})

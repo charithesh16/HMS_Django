@@ -20,7 +20,7 @@
             </li>
             {% if person.type == 1%}
             <li class="nav-item">
-                <a class="nav-link" href="#">Appointments</a>
+                <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Invoice & Payments</a>
@@ -33,12 +33,12 @@
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="#">Appointments</a>
+                <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{%url 'prescription'%}">Prescriptions</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="{%url 'profile' %}">Profile</a>
             </li>
             {% endif %}

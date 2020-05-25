@@ -8,5 +8,6 @@ from .models import Patient
 def medicalhistory(request):
     person = Person.objects.get(user=User.objects.get(username=request.user))
     patient = Patient.objects.get(person=person)
-    prescriptions = Prescription.objects.filter(patient=patient)
+    prescriptions = Prescription.objects.filter(
+        patient=patient).order_by('date')
     return render(request, 'patient/medicalhistory.html', {'prescriptions': prescriptions, 'person': person})

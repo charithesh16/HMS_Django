@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %} | User Profile {% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">HMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{%url 'appointment'%}">Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{%url 'rpatients'%}">Patients</a>
+            </li>
+            <li class="nav-item mr-3">
+                <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link"><i
+                        class="fas fa-sign-out-alt"></i> Logout</a>
+                <form action="{% url 'logout' %}" method="POST" id="logout">
+                    {% csrf_token %}
+                    <input type="hidden">
+                </form>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login'  %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'Register' %}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Patient</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{%url 'rpatients'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" id="name" name="name"
+                            placeholder="Enter patient name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" class="form-control" id="phone" name="phone"
+                            placeholder="Enter patient's phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" class="form-control" id="email" name="email"
+                            placeholder="Enter patient's email">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" class="form-control" id="gender" name="gender"
+                            placeholder="Enter patient's gender">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Age</label>
+                        <input type="number" id="age" class="form-control" id="age" name="age"
+                            placeholder="Enter patient's age">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row p-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Create Patient
+        </button>
+    </div>
+
+    <table class=" mt-5 table table-striped table-condensed">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Age</th>
+                <th scope="col">Update</th>
+                <th scope="col">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in patients %}
+            <tr>
+                <td>{{i.name}}</td>
+                <td>{{ i.phone}}</td>
+                <td>{{ i.email}}</td>
+                <td>{{i.gender}}</td>
+                <td>{{i.age}}</td>
+                <td><button type="button" class="btn btn-primary"><a style="text-decoration: none;color:white"
+                            href="{%url 'update_patient' i.id%}">Update</a>
+                    </button></td>
+                <td><button type="button" class="btn btn-danger">
+                        <a style="text-decoration: none;color:white" href="{%url 'delete_patient' i.id%}">Remove</a>
+                    </button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</div>
+{% endblock %}

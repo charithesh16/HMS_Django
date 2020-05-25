@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Person
+from .models import Person, Receptionist, Rpatient
 from django.contrib.auth.models import User, Group
 from django.contrib import auth
 from patient.models import Patient
@@ -56,12 +56,6 @@ def register(request):
                         d_group = Group.objects.get(name='Doctor')
                         d_group.user_set.add(user)
                     person.save()
-                    # patient = Patient(person=Person(user=user))
-                    # patient.save()
-
-                    # patient = Patient(person=person)
-                    # patient.save()
-                    # messages.success(request, 'User Registered Successfully')
                     return redirect('login')
 
         else:
@@ -139,3 +133,52 @@ def profile(request):
             return render(request, 'hms/profile.html', {'x': x_person, 'person': person})
         else:
             return render(request, 'hms/profile.html', {'x': None, 'person': person})
+
+
+def patients(request):
+    user = User.objects.get(username=request.user)
+    receptionist = Receptionist.objects.get(
+        person=Person.objects.get(user=user))
+    if request.method == "POST":
+        name = request.POST["name"]
+        phone = request.POST["phone"]
+        email = request.POST["email"]
+        gender = request.POST["gender"]
+        age = request.POST["age"]
+        obj = Rpatient(receptionist=receptionist, name=name,
+                       phone=phone, email=email, gender=gender, age=age)
+        obj.save()
+
+    patients = Rpatient.objects.filter(receptionist=receptionist)
+    return render(request, 'receptionist/patients.html', {'patients': patients})
+
+
+def delete_patient(request, patient_id=None):
+    user = User.objects.get(username=request.user)
+    receptionist = Receptionist.objects.get(
+        person=Person.objects.get(user=user))
+    patient = Rpatient.objects.get(id=patient_id)
+    patient.delete()
+    patients = Rpatient.objects.filter(receptionist=receptionist)
+    # return render(request, 'receptionist/patients.html', {'patients': patients})
+    return redirect('rpatients')
+
+
+def update_patient(request, patient_id=None):
+    patient = Rpatient.objects.get(id=patient_id)
+    print(patient)
+    if request.method == "POST":
+        name = request.POST["name"]
+        phone = request.POST["phone"]
+        email = request.POST["email"]
+        gender = request.POST["gender"]
+        age = request.POST["age"]
+        patient.name = name
+        patient.phone = phone
+        patient.email = email
+        patient.gender = gender
+        patient.age = age
+        patient.save()
+        return redirect('rpatients')
+    # patients = Rpatient.objects.filter(receptionist=receptionist)
+    return render(request, 'receptionist/update_patient.html', {'patients': patient})
