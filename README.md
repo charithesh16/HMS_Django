@@ -22,3 +22,4 @@ Python version 3.8
    - For login ```accounts/login```
    - For admin panel ```admin/```
 7. to login as receptionist create receptionist profile in the admin panel and login with the receptionist credentials.
+   - ####Note : enter 3 in the type field when u create the receptionist user
